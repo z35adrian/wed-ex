@@ -1,0 +1,537 @@
+/* ==========================================
+   1. RESET & BASE STYLES
+   ========================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+/* System Lock / Unlock Scroll */
+html.no-scroll, 
+body.no-scroll {
+  overflow: hidden !important;
+  height: 100vh !important;
+  touch-action: none;
+}
+
+/* ==========================================
+   2. FULLSCREEN CONTAINER & CARD
+   ========================================== */
+.invitation-container {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #ffffff;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.card {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease, object-position 0.3s ease;
+}
+
+/* ==========================================
+   3. TYPOGRAPHY
+   ========================================== */
+.font-handwriting {
+  font-family: 'Caveat', cursive;
+  color: #f0ec00;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.85);
+}
+
+.font-sans {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-serif {
+  font-family: Georgia, serif;
+}
+
+.txt-xs { font-size: clamp(0.9rem, 2vw, 1.2rem); line-height: 1.4; text-shadow: 1px 1px 6px rgba(0,0,0,0.8); }
+.txt-sm { font-size: clamp(1.2rem, 3vw, 1.6rem); }
+.txt-md { font-size: clamp(1.5rem, 4vw, 2.2rem); }
+.txt-lg { font-size: clamp(2rem, 5vw, 3rem); }
+.txt-xl { font-size: clamp(2.8rem, 7vw, 4.2rem); font-weight: 700; }
+
+/* ==========================================
+   4. COVER SECTION & BUTTON OPEN
+   ========================================== */
+.cover-section {
+  z-index: 10;
+  background-color: #000000;
+}
+
+.btn-open-invitation {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 25px;
+  padding: 12px 30px;
+  background-color: #5b7553;
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-open-invitation:hover {
+  background-color: #485f41;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+/* ==========================================
+   5. OVERLAY TEXT POSITIONS
+   ========================================== */
+.overlay-text {
+  position: absolute;
+  z-index: 2;
+  text-align: center;
+  padding: 20px;
+  width: 90%;
+  max-width: 800px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.center-left { 
+  top: 40%; 
+  left: 3%; 
+  transform: translateY(-50%); 
+  text-align: left; 
+}
+
+.pos-top-left { top: 8%; left: 8%; transform: none; text-align: left; width: auto; }
+.pos-top-right { top: 8%; right: 8%; left: auto; transform: none; text-align: right; width: auto; }
+
+.pos-left-mid { 
+  top: 45%; 
+  left: 8%; 
+  transform: none; 
+  text-align: left; 
+}
+
+.pos-right-mid { 
+  top: 25%; 
+  right: 8%; 
+  left: auto; 
+  transform: none; 
+  text-align: right; 
+}
+
+.pos-top-center { top: 10%; }
+.pos-bottom-center { bottom: 8%; }
+.pos-center { top: 50%; transform: translate(-50%, -50%); }
+
+.quote-box {
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  padding: 30px;
+  border-radius: 16px;
+  color: #fff;
+  width: 85%;
+  max-width: 650px;
+}
+
+.quote-text {
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.quote-source {
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+.date-header { font-size: clamp(2.5rem, 6vw, 4rem); letter-spacing: 2px; }
+.venue-title { font-size: clamp(3rem, 8vw, 5rem); line-height: 1; margin: 10px 0; }
+
+.btn-maps {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 28px;
+  background-color: #5b7553;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-maps:hover { background-color: #485f41; }
+.gift-desc { max-width: 450px; margin: 10px auto 0; }
+
+/* ==========================================
+   6. DESKTOP ADJUSTMENTS (>= 769px)
+   ========================================== */
+@media screen and (min-width: 769px) {
+  .cover-section .image-wrapper img {
+    object-position: center 75%;
+  }
+
+  .invitation-container > section:nth-of-type(5) .image-wrapper img {
+    object-position: center 80%;
+  }
+
+  .invitation-container > section:nth-of-type(6) .image-wrapper img {
+    object-position: center calc(50% + 5rem);
+  }
+}
+
+/* ==========================================
+   7. MOBILE ADJUSTMENTS (<= 768px)
+   ========================================== */
+@media screen and (max-width: 768px) {
+  .cover-section .image-wrapper img {
+    object-position: calc(50% - 1rem) center;
+  }
+
+  .center-left {
+    top: 22%;
+    left: 5%;
+    transform: none;
+  }
+
+  .invitation-container > section:nth-of-type(3) .image-wrapper img {
+    object-position: calc(50% - 5rem) center;
+  }
+
+  .pos-left-mid {
+    top: 52%;
+  }
+}
+
+/* ==========================================
+   8. RSVP FORM & OVERLAY
+   ========================================== */
+.form-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-overlay-content { width: 100%; max-width: 500px; }
+.form-title { font-size: clamp(2.2rem, 5vw, 3.2rem); color: #222; text-align: center; text-shadow: none; }
+
+form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; width: 100%; }
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.85);
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  border-radius: 20px;
+  border: none;
+  background-color: #5b7553;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover { background-color: #485f41; }
+
+/* ==========================================
+   9. REVEAL & PARALLAX SECTIONS (FIXED PATH)
+   ========================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.parallax-section {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.parallax-section .overlay-text {
+  z-index: 2;
+}
+
+/* Memanggil gambar dengan fallback ganda (path lokal relatif dan path langsung) */
+.parallax-bg-6 { 
+  background-image: url('image/6.jpg'), url('../asset/image/6.jpg'), url('asset/image/6.jpg'); 
+}
+.parallax-bg-7 { 
+  background-image: url('image/10.jpg'), url('../asset/image/10.jpg'), url('asset/image/10.jpg'); 
+}
+.parallax-bg-8 { 
+  background-image: url('image/8.jpg'), url('../asset/image/8.jpg'), url('asset/image/8.jpg'); 
+}
+
+/* Mode Parallax Desktop */
+@media screen and (min-width: 769px) {
+  .parallax-section {
+    background-attachment: fixed;
+  }
+}
+
+/* Mode Mobile */
+@media screen and (max-width: 768px) {
+  .parallax-section {
+    background-attachment: scroll;
+  }
+}
+
+/* ==========================================
+   10. FLOATING MUSIC PLAYER
+   ========================================== */
+.music-player {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.music-player.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.music-player button {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(91, 117, 83, 0.85);
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.music-player button:hover {
+  transform: scale(1.1);
+  background: rgba(72, 95, 65, 0.95);
+}
+
+.music-player button.playing {
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   11. BUTTON SEND GIFT & MODAL ENVELOPE
+   ========================================== */
+.btn-gift {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 12px 28px;
+  background-color: #5b7553;
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-gift:hover {
+  background-color: #485f41;
+  transform: translateY(-2px);
+}
+
+/* Modal Overlay Layer */
+.modal-gift-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(5px);
+  z-index: 999999 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-gift-overlay.active {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* Container Modal Pop-up */
+.modal-gift-content {
+  position: relative;
+  background: #ffffff;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 16px;
+  padding: 30px 20px 25px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.modal-gift-overlay.active .modal-gift-content {
+  transform: scale(1);
+}
+
+.btn-close-modal {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  background: #333333;
+  color: #ffffff;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.modal-title {
+  color: #222222;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+/* Kartu Bank Hijau (#5b7553) */
+.bank-card {
+  background-color: #5b7553;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 20px 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.bank-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  font-family: sans-serif;
+  text-transform: uppercase;
+}
+
+.rekening-number {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.rekening-owner {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+
+.btn-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  color: #333333;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-copy:hover {
+  background: #f0f0f0;
+  transform: scale(1.03);
+}
