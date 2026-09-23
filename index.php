@@ -143,14 +143,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- Floating Music Player -->
   <div id="music-container" class="music-player">
-    <button id="music-btn" aria-label="Toggle Music">
+    <button id="music-btn" class="muted" type="button" aria-label="Nyalakan musik" title="Nyalakan musik">
       <svg id="icon-music" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M9 18V5l12-2v13"></path>
         <circle cx="6" cy="18" r="3"></circle>
         <circle cx="18" cy="16" r="3"></circle>
+        <path class="speaker-slash" d="M4 4l16 16"></path>
       </svg>
     </button>
-    <audio id="bg-music" loop preload="auto">
+    <audio id="bg-music" loop preload="auto" muted>
       <source src="asset/music.mp3" type="audio/mpeg">
     </audio>
   </div>
@@ -215,17 +216,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </section>
 
-    <!-- Section 4: Parents Info -->
-    <section class="card reveal">
+    <!-- Section 4: Story (Love Story) -->
+    <section class="card reveal story-section">
       <div class="image-wrapper">
-        <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=800&q=80" alt="Street View Photo">
-        <div class="overlay-text font-handwriting pos-top-left">
-          <p class="txt-sm">Son of</p>
-          <p class="txt-md">Iqbal Hidayat & Hamsiah</p>
-        </div>
-        <div class="overlay-text font-handwriting pos-top-right">
-          <p class="txt-sm">Daughter of</p>
-          <p class="txt-md">Setyo Nugroho & Dian Farida Anies</p>
+        <img src="asset/image/13.jpeg" alt="Story Background Photo" class="img-story">
+        <div class="story-overlay">
+          <div class="story-content">
+            <h2 class="font-serif story-main-title">LOVE STORY</h2>
+
+            <!-- Item 1: Pertemuan -->
+            <div class="story-item">
+              <h3 class="font-serif story-sub-title">Sebuah Pertemuan</h3>
+              <p class="story-text">
+                Ada masa ketika kami berjalan dengan cerita kami masing-masing.<br>
+                Pernah mencintai, pernah berharap, pernah terluka, dan pernah bertanya-tanya kepada Tuhan, “Kapan waktunya?”
+              </p>
+            </div>
+
+            <div class="story-divider">
+              <span class="divider-line"></span>
+              <span class="divider-heart">♥</span>
+              <span class="divider-line"></span>
+            </div>
+
+            <!-- Item 2: Perkenalan & Hubungan -->
+            <div class="story-item">
+              <h3 class="font-serif story-sub-title">Perjalanan Rasa</h3>
+              <p class="story-text">
+                Lalu, pada Maret 2025, melalui seorang teman, Tuhan mempertemukan kami.<br>
+                Tidak ada yang terlalu istimewa pada awalnya. Hanya sebuah perkenalan sederhana. Namun dari perkenalan itu, perlahan tumbuh rasa yang membawa kami semakin dekat.<br><br>
+                Mei 2025 menjadi awal perjalanan kami sebagai sepasang kekasih.<br>
+                Kami belajar mengenal satu sama lain, menerima masa lalu masing-masing, dan menemukan bahwa terkadang jawaban dari doa datang bukan seperti yang kita bayangkan, tetapi jauh lebih indah dari yang kita harapkan.
+              </p>
+            </div>
+
+            <div class="story-divider">
+              <span class="divider-line"></span>
+              <span class="divider-heart">♥</span>
+              <span class="divider-line"></span>
+            </div>
+
+            <!-- Item 3: Lamaran -->
+            <div class="story-item">
+              <h3 class="font-serif story-sub-title">Lamaran</h3>
+              <p class="story-text">
+                Pada 25 Agustus 2026, kami memilih untuk melangkah lebih jauh melalui sebuah lamaran.<br>
+                Bukan karena perjalanan kami selalu mudah, tetapi karena kami menemukan seseorang yang ingin kami pilih untuk setiap perjalanan setelahnya.
+              </p>
+            </div>
+
+            <div class="story-divider">
+              <span class="divider-line"></span>
+              <span class="divider-heart">♥</span>
+              <span class="divider-line"></span>
+            </div>
+
+            <!-- Item 4: Penutup -->
+            <div class="story-item">
+              <h3 class="font-serif story-sub-title">Takdir-Nya</h3>
+              <p class="story-text">
+                Mungkin kami terlambat bertemu.<br>
+                Tetapi kami percaya, Tuhan tidak pernah terlambat mempertemukan kami.
+              </p>
+            </div>
+
+          </div>
         </div>
       </div>
     </section>
@@ -423,6 +478,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       const bgMusic = document.getElementById("bg-music");
       let isPlaying = false;
 
+      function updateMusicButtonState() {
+        if (isPlaying) {
+          musicBtn.classList.remove("muted");
+          musicBtn.classList.add("playing");
+          musicBtn.setAttribute("aria-label", "Matikan musik");
+          musicBtn.setAttribute("title", "Matikan musik");
+        } else {
+          musicBtn.classList.remove("playing");
+          musicBtn.classList.add("muted");
+          musicBtn.setAttribute("aria-label", "Nyalakan musik");
+          musicBtn.setAttribute("title", "Nyalakan musik");
+        }
+      }
+
       <?php if (!empty($status_pesan)): ?>
         htmlEl.classList.remove("no-scroll");
         bodyEl.classList.remove("no-scroll");
@@ -432,13 +501,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       function toggleMusic() {
         if (isPlaying) {
           bgMusic.pause();
-          musicBtn.classList.remove("playing");
-        } else {
-          bgMusic.play().then(() => {
-            musicBtn.classList.add("playing");
-          }).catch(err => console.log("Autoplay ditolak:", err));
+          bgMusic.muted = true;
+          isPlaying = false;
+          updateMusicButtonState();
+          return;
         }
-        isPlaying = !isPlaying;
+
+        bgMusic.muted = false;
+        bgMusic.play().then(() => {
+          isPlaying = true;
+          updateMusicButtonState();
+        }).catch(err => {
+          console.log("Autoplay ditolak:", err);
+          bgMusic.muted = true;
+          isPlaying = false;
+          updateMusicButtonState();
+        });
       }
 
       if (btnOpen) {
@@ -454,6 +532,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
 
       if (musicBtn) {
+        updateMusicButtonState();
         musicBtn.addEventListener("click", toggleMusic);
       }
 

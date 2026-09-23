@@ -207,10 +207,6 @@ body.no-scroll {
     object-position: center 75%;
   }
 
-  .invitation-container > section:nth-of-type(5) .image-wrapper img {
-    object-position: center 80%;
-  }
-
   .invitation-container > section:nth-of-type(6) .image-wrapper img {
     object-position: center calc(50% + 5rem);
   }
@@ -285,7 +281,7 @@ form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; width
 .btn-submit:hover { background-color: #485f41; }
 
 /* ==========================================
-   9. REVEAL & PARALLAX SECTIONS (FIXED PATH)
+   9. REVEAL & PARALLAX SECTIONS (CROSS-DEVICE FIX)
    ========================================== */
 .reveal {
   opacity: 0;
@@ -306,38 +302,38 @@ form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; width
   display: flex;
   justify-content: center;
   align-items: center;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  /* Membuat clipping boundary agar gambar parallax tidak merembet ke section lain */
+  clip-path: inset(0 0 0 0);
 }
 
 .parallax-section .overlay-text {
   z-index: 2;
 }
 
-/* Memanggil gambar dengan fallback ganda (path lokal relatif dan path langsung) */
-.parallax-bg-6 { 
-  background-image: url('image/6.jpg'), url('../asset/image/6.jpg'), url('asset/image/6.jpg'); 
-}
-.parallax-bg-7 { 
-  background-image: url('image/10.jpg'), url('../asset/image/10.jpg'), url('asset/image/10.jpg'); 
-}
-.parallax-bg-8 { 
-  background-image: url('image/8.jpg'), url('../asset/image/8.jpg'), url('asset/image/8.jpg'); 
-}
-
-/* Mode Parallax Desktop */
-@media screen and (min-width: 769px) {
-  .parallax-section {
-    background-attachment: fixed;
-  }
+/* Penggunaan ::before untuk menggantikan background-attachment: fixed */
+.parallax-section::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  will-change: transform;
+  z-index: -1;
 }
 
-/* Mode Mobile */
-@media screen and (max-width: 768px) {
-  .parallax-section {
-    background-attachment: scroll;
-  }
+/* Gambar latar belakang untuk masing-masing section */
+.parallax-bg-6::before { 
+  background-image: url('image/6.jpg'); 
+}
+.parallax-bg-7::before { 
+  background-image: url('image/10.jpg'); 
+}
+.parallax-bg-8::before { 
+  background-image: url('image/8.jpg'); 
 }
 
 /* ==========================================
@@ -379,8 +375,26 @@ form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; width
   background: rgba(72, 95, 65, 0.95);
 }
 
+.music-player button .speaker-slash {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.music-player button.muted {
+  background: rgba(92, 92, 92, 0.9);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.music-player button.muted .speaker-slash {
+  opacity: 1;
+}
+
 .music-player button.playing {
   animation: spin 4s linear infinite;
+}
+
+.music-player button.playing .speaker-slash {
+  opacity: 0;
 }
 
 @keyframes spin {
@@ -412,7 +426,6 @@ form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; width
   transform: translateY(-2px);
 }
 
-/* Modal Overlay Layer */
 .modal-gift-overlay {
   position: fixed !important;
   top: 0 !important;
@@ -438,7 +451,6 @@ form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; width
   pointer-events: auto !important;
 }
 
-/* Container Modal Pop-up */
 .modal-gift-content {
   position: relative;
   background: #ffffff;
@@ -482,7 +494,6 @@ form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; width
   margin-bottom: 20px;
 }
 
-/* Kartu Bank Hijau (#5b7553) */
 .bank-card {
   background-color: #5b7553;
   color: #ffffff;
@@ -534,4 +545,104 @@ form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; width
 .btn-copy:hover {
   background: #f0f0f0;
   transform: scale(1.03);
+}
+
+/* ==========================================
+   12. LOVE STORY SECTION (FIXED HEIGHT)
+   ========================================== */
+.story-section {
+  height: 100vh !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.story-section .image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.story-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+
+/* Sembunyikan scrollbar internal */
+.story-overlay::-webkit-scrollbar {
+  display: none;
+}
+.story-overlay {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.story-content {
+  width: 100%;
+  max-width: 680px;
+  text-align: center;
+  color: #ffffff;
+  margin: auto;
+}
+
+.story-main-title {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  letter-spacing: 3px;
+  margin-bottom: 35px;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.story-item {
+  margin: 20px 0;
+}
+
+.story-sub-title {
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  margin-bottom: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.story-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.88rem, 2vw, 1rem);
+  line-height: 1.7;
+  opacity: 0.95;
+  font-weight: 400;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Divider & Heart Icon */
+.story-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 25px auto;
+  width: 80%;
+  max-width: 400px;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.divider-heart {
+  font-size: 0.85rem;
+  color: #ffffff;
+  opacity: 0.9;
 }
